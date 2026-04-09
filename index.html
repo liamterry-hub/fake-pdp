@@ -355,18 +355,20 @@
     /* Desktop accordion rows */
     .dsk-accordion{border-bottom:1px solid rgba(0,0,0,0.1)}
     .dsk-accordion-btn{
-      width:100%;
+      width:calc(100% + 16px);
       display:flex;
       align-items:center;
       justify-content:space-between;
       background:none;
       border:none;
-      padding:16px 0;
+      padding:16px 8px;
+      margin:0 -8px;
       cursor:pointer;
       font-family:'Inter',sans-serif;
-      transition:opacity .15s;
+      border-radius:8px;
+      transition:background-color .15s cubic-bezier(.4,0,.2,1);
     }
-    .dsk-accordion-btn:hover{opacity:.6}
+    .dsk-accordion-btn:hover{background-color:rgb(208 197 174/.15)}
     .dsk-accordion-label{
       font-size:12px;
       font-weight:500;
