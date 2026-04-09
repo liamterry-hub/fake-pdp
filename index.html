@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>NutriLab – Protein Shake</title>
+<style>
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  button,select,input{font-family:'Inter',sans-serif;font-weight:400}
+  body{font-family:'Inter',sans-serif;background:#f8f4ee;color:#0c0c0d;min-height:100vh;overflow-x:hidden}
+  header{background:#fff;border-bottom:1px solid #e8e2d9;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:center}
+  .logo{font-size:20px;font-weight:800;letter-spacing:-0.5px}
+  .logo span{color:#bf5220}
+
+  .product{width:100%;padding:0 0 60px;background:#f8f4ee}
+  .pdp-body-desktop{display:block}
+  .pdp-left-desktop{display:block}
+  .pdp-right-desktop{display:none}
+  /* NAV */
+  .site-nav{background:#fff;height:48px;display:flex;align-items:center;justify-content:center;margin:0 -20px;border-bottom:1px solid rgba(0,0,0,0.08)}
+  .site-nav-logo{font-family:'Inter',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;color:#0c0c0d}
+  .site-nav-logo span{color:#bf5220}
+
+  .img-section{margin:0;position:relative}
+  .slider{position:relative;width:100%;height:437px;overflow:hidden;margin-bottom:0}
+  .slides{display:flex;transition:transform .35s ease;height:100%}
+  .slides img{flex:0 0 100%;width:100%;min-width:0;height:100%;object-fit:cover;}
+  .slider-btn{position:absolute;top:50%;transform:translateY(-50%);background:#fff;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;padding:0}
+  .slider-btn.prev{left:20px}
+  .slider-btn.next{right:20px}
+  .dots{position:absolute;top:382px;left:32px;display:flex;align-items:center;gap:4px;z-index:2}
+  .dot{width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.4);cursor:pointer;transition:all .25s ease}
+  .dot.active{background:#fff}
+  .new-badge{position:absolute;top:20px;left:20px;z-index:2;display:flex;align-items:center;gap:4px;background:#fff;padding:4px 8px;border-radius:20px}
+  .new-badge .badge-star{font-size:12px;font-weight:600}
+  .new-badge .badge-label{font-size:10px;color:#0c0c0d;font-weight:600;letter-spacing:0.3px}
+  .img-bottom-bar{height:24px;background:#f8f4ee;border-radius:24px 24px 0 0;margin-top:-24px;position:relative;z-index:1}
+
+  .tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#bf5220;margin-bottom:8px}
+  h1{font-size:26px;font-weight:800;line-height:1.2;margin-bottom:10px}
+  .sub{font-size:15px;color:#6e6e6e;line-height:1.6;margin-bottom:16px}
+
+  .rating-row{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+  .stars{color:#f4a623;font-size:15px;letter-spacing:1px}
+  .rating-text{font-size:13px;color:#6e6e6e}
+
+  .price{font-size:28px;font-weight:800;margin-bottom:20px}
+  .price small{font-size:14px;font-weight:400;color:#6e6e6e;margin-left:6px}
+
+  .variants-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6e6e6e;margin-bottom:8px}
+  .variants{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .v{border:1.5px solid #ddd;border-radius:8px;padding:8px 16px;font-size:14px;font-weight:600;cursor:pointer;background:#fff;transition:all .15s;color:#0c0c0d}
+  .v.active,.v:hover{border-color:#0c0c0d;background:#1a1a1a;color:#fff}
+
+  .buy-btn{width:100%;background:#1a1a1a;color:#fff;border:none;padding:16px;border-radius:12px;font-size:17px;font-weight:800;cursor:pointer;transition:background .15s;margin-bottom:10px}
+  .buy-btn:hover{background:#bf5220}
+  .note{text-align:center;font-size:12px;color:#9a9a9a;margin-bottom:32px}
+
+
+  /* DESCRIPTION SECTION */
+  .pdp-stars-row{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+  .pdp-stars-text{font-size:20px;color:#bf5220;letter-spacing:2px;line-height:1}
+  .pdp-customers{font-size:12px;font-weight:500;color:#1a100a}
+  .pdp-title{font-size:30px;font-weight:500;line-height:1.12;letter-spacing:-0.6px;color:#0c0c0d;margin-bottom:4px}
+  .pdp-subtitle{font-size:18px;color:#6e6e6e;line-height:1.4;margin-bottom:16px}
+  .pdp-badges{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+  .badge-green{background:#fdf6ee;border:1px solid rgba(191,82,32,0.3);color:#bf5220;font-size:14px;padding:4px 6px;border-radius:4px}
+  .badge-green strong{font-weight:500}
+  .badge-grey{border:1px solid rgba(0,0,0,0.15);color:#6e6e6e;font-size:14px;padding:4px 6px;border-radius:4px}
+  .pdp-body{font-size:16px;color:#5c4a3a;line-height:1.4}
+  .pdp-content-card{background:#f8f4ee;border-radius:20px 20px 0 0;padding:24px 20px 0;margin-top:-20px;position:relative}
+  .pdp-divider-line{display:none}
+  .pdp-flavour-card{margin:16px 0;background:transparent;border:1px solid rgba(0,0,0,0.12);border-radius:12px;overflow:hidden}
+  .flavour-selected{display:flex;align-items:center;gap:4px;padding:8px 20px;height:68px;cursor:pointer;flex-shrink:0}
+  .flavour-left{display:flex;align-items:center;gap:8px;flex:1}
+  .flavour-avatar{width:52px;height:52px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:center;position:relative;overflow:hidden}
+  .flavour-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .flavour-text{display:flex;flex-direction:column;gap:2px;padding:2px 0}
+  .flavour-name{font-size:13px;font-weight:500;color:#0c0c0d;line-height:1}
+  .flavour-price{font-size:12px;color:#6e6e6e;line-height:1.4}
+  .flavour-change{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500;color:#6e6e6e;white-space:nowrap}
+  .flavour-options{overflow:hidden;max-height:0;transition:max-height .42s cubic-bezier(.4,0,.2,1)}
+  .flavour-options.open{max-height:341px}
+  .flavour-options-divider{height:1px;background:rgba(0,0,0,0.1);margin:0}
+  .flavour-scroll-wrap{position:relative}
+  #flavour-options-list{overflow-y:auto;max-height:340px}
+  .flavour-fade{position:absolute;bottom:0;left:0;right:0;height:56px;background:linear-gradient(to bottom,transparent,#f8f4ee);pointer-events:none;transition:opacity .2s ease}
+  .flavour-scroll-wrap.at-bottom .flavour-fade{opacity:0}
+  .flavour-option-item{display:flex;align-items:center;gap:4px;padding:8px 20px;height:68px;cursor:pointer;transition:background .15s}
+  .flavour-option-item:active{background:#f8f4ee}
+  .flavour-option-avatar{width:52px;height:52px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:center}
+  .flavour-option-info{flex:1;display:flex;flex-direction:column;gap:2px;padding:2px 0}
+  .flavour-option-name{font-size:13px;font-weight:500;color:#0c0c0d;line-height:1}
+  .flavour-option-meta{font-size:12px;color:#6e6e6e;line-height:1.4}
+  .flavour-option-check{visibility:hidden;flex-shrink:0}
+  .flavour-option-item.selected .flavour-option-check{visibility:visible}
+  #flavour-chevron{transition:transform .3s ease}
+  .pdp-flavour-card.open #flavour-chevron{transform:rotate(180deg)}
+  .pdp-cta{display:flex;flex-direction:column;gap:12px;align-items:center;margin-bottom:32px}
+  .pdp-buy-btn{width:100%;background:#0c0c0d;color:#fff;border:none;height:56px;border-radius:999px;font-size:15px;font-weight:500;cursor:pointer;transition:opacity .15s;letter-spacing:0}
+  .pdp-buy-btn:hover{opacity:.85}
+  .pdp-perks{display:flex;flex-direction:column;gap:8px;align-items:center}
+  .pdp-perk{display:flex;align-items:center;gap:6px;font-size:12px;color:#0c0c0d}
+  .pdp-perk-icon{width:16px;height:16px;object-fit:contain;flex-shrink:0}
+
+  .section-heading{font-family:'Inter',sans-serif;font-size:24px;font-weight:500;color:#0c0c0d;line-height:1.2;letter-spacing:-0.48px;margin:-16px 0 16px}
+
+  /* BENEFITS */
+  .benefits-section{display:flex;flex-direction:column;gap:24px;padding:48px 20px;background:rgba(191,82,32,0.07)}
+  .benefits-label{font-family:'Inter',sans-serif;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.96px;color:#bf5220;line-height:1}
+  .benefits-grid{display:flex;flex-direction:column;gap:24px;width:100%}
+  .benefits-row{display:flex;gap:24px;width:100%}
+  .benefit-item{display:flex;gap:12px;align-items:center;flex:1;min-width:0}
+  .benefit-icon-box{width:24px;height:24px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .benefit-body{display:flex;flex-direction:column;gap:8px;flex:1;line-height:1.4}
+  .benefit-title{font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:#0c0c0d}
+  .benefit-supporting{font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:#2d2d2e}
+
+  /* NUTRITION */
+  .nutrition-section{display:flex;flex-direction:column;gap:24px;padding:48px 20px;background:transparent}
+  .nutrition-label{font-family:'Inter',sans-serif;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.96px;color:#bf5220;line-height:1}
+  .nutrition-table{border:1px solid rgba(208,197,174,0.31);border-radius:8px;overflow:hidden;display:flex;width:100%}
+  .nt-col-left{flex:1;min-width:0}
+  .nt-col-right{flex:1;min-width:0;background:rgba(191,82,32,0.07);border-left:1px solid rgba(191,82,32,0.12)}
+  .nt-cell{height:37px;display:flex;align-items:center;padding:0 8px;border-bottom:1px solid rgba(208,197,174,0.31);font-family:'Inter',sans-serif;font-size:14px;font-weight:400;color:#0c0c0d}
+  .nt-cell.hd{height:34px;font-size:12px;font-weight:500}
+  .nt-cell.bold{font-weight:500}
+  .nt-cell.center{justify-content:center}
+  .nt-cell.last{border-bottom:none}
+
+  /* REVIEWS */
+  /* REVIEWS (carousel) */
+  .reviews-section{display:flex;flex-direction:column;gap:24px;padding:48px 20px 56px;background:rgba(191,82,32,0.07)}
+  .reviews-label{font-family:'Inter',sans-serif;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.96px;color:#bf5220;line-height:1}
+  .rc-viewport{overflow:hidden;width:100%}
+  .rc-carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .rc-carousel::-webkit-scrollbar{display:none}
+  .rc-card{flex:0 0 100%;}
+  .rc-card{flex:0 0 100%;background:#f8f4ee;border:none;border-radius:8px;padding:32px 24px;scroll-snap-align:center;display:flex;flex-direction:column;gap:24px;box-sizing:border-box}
+  .rc-card.beige{background:#f8f4ee}
+  .rc-review{display:flex;flex-direction:column;gap:12px}
+  .rc-stars{width:107px;height:20px;object-fit:contain;display:block}
+  .rc-stars-text{font-size:16px;color:#bf5220;letter-spacing:2px;line-height:1}
+  .rc-stars-clip{width:86px;height:20px;overflow:hidden;flex-shrink:0}
+  .rc-title{font-family:'Inter',sans-serif;font-size:16px;font-weight:500;color:#0c0c0d;line-height:1.4}
+  .rc-body{font-family:'Inter',sans-serif;font-size:16px;font-weight:400;color:#5c4a3a;line-height:1.4;margin:0}
+  .rc-author{font-family:'Inter',sans-serif;font-size:14px;font-weight:400;color:#6e6e6e;line-height:1.4;margin-top:auto}
+  .rc-nav{display:flex;align-items:center;justify-content:space-between;height:40px}
+  .rc-dots{display:flex;gap:6px;align-items:center}
+  .rc-dot{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.2);transition:width 0.2s,border-radius 0.2s,background 0.2s}
+  .rc-dot.active{background:#0c0c0d}
+  .rc-arrows{display:flex;gap:16px}
+  .rc-arrow{width:40px;height:40px;border:1.25px solid #0c0c0d;border-radius:50%;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+  .rc-trustpilot{display:flex;flex-direction:row;gap:16px;align-items:center;justify-content:center}
+  .rc-tp-score{font-family:'Inter',sans-serif;font-size:48px;font-weight:500;color:#0c0c0d;line-height:1;letter-spacing:-1px}
+  .rc-tp-right{display:flex;flex-direction:column;gap:5px;justify-content:center}
+  .rc-tp-stat{font-family:'Inter',sans-serif;font-size:13px;font-weight:400;color:#6e6e6e;white-space:nowrap}
+
+  /* SORRY PAGE */
+  #sorry{display:none;min-height:100vh;background:#f8f4ee;font-family:'Inter',sans-serif}
+  .sorry-nav{margin:0!important;display:flex!important}
+  .sorry-body{padding:24px 20px 60px;box-sizing:border-box}
+  .sorry-left{}
+  .sorry-right{}
+  .back{background:none;border:none;font-size:14px;font-weight:400;color:#6e6e6e;cursor:pointer;margin-bottom:24px;display:inline-flex;align-items:center;gap:6px;padding:0;font-family:'Inter',sans-serif}
+  .back:hover{color:#0c0c0d}
+  .sorry-card{background:#fff;border-radius:16px;padding:32px 24px;margin-bottom:32px;text-align:center}
+  .sorry-icon{font-size:48px;margin-bottom:16px}
+  .sorry-card h2{font-family:'Inter',sans-serif;font-size:20px;font-weight:500;color:#0c0c0d;margin:0 0 10px;line-height:1.3;letter-spacing:-0.4px}
+  .sorry-card p{font-family:'Inter',sans-serif;font-size:15px;color:#5c4a3a;line-height:1.6;margin:0 0 24px}
+  .email-row{display:flex;gap:8px}
+  .email-row input{flex:1;padding:14px 16px;border:1.5px solid #e0dbd2;border-radius:12px;font-size:14px;outline:none;font-family:'Inter',sans-serif;background:#fff;color:#0c0c0d;min-width:0}
+  .email-row input:focus{border-color:#bf5220}
+  .email-row input::placeholder{color:#9a9a9a}
+  .email-row button{background:#bf5220;color:#fff;border:none;padding:14px 20px;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif}
+  .email-row button:hover{background:#9e4419}
+  .success{background:#fdf6ee;color:#7a4010;border-radius:10px;padding:14px;font-size:14px;font-weight:500;display:none;margin-top:12px;text-align:center;font-family:'Inter',sans-serif}
+  .range-heading{font-family:'Inter',sans-serif;font-size:18px;font-weight:500;color:#0c0c0d;margin:0 0 4px;letter-spacing:-0.3px}
+  .range-sub{font-family:'Inter',sans-serif;font-size:14px;color:#5c4a3a;margin:0 0 16px}
+  .range-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .range-card{background:#fff;border-radius:12px;overflow:hidden;cursor:pointer}
+  .range-card-img{background:#e8e2d8;height:130px;overflow:hidden}
+  .range-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .range-card-info{padding:12px}
+  .range-cat{font-family:'Inter',sans-serif;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.96px;color:#bf5220;margin-bottom:4px}
+  .range-name{font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:#0c0c0d;margin-bottom:4px;line-height:1.3}
+  .range-price{font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:#0c0c0d;margin-bottom:6px}
+  .range-rating{display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:12px;color:#6e6e6e}
+  .range-stars{color:#9a9a9a;font-size:12px;letter-spacing:1px}
+
+  /* ── DESKTOP UTILITY ── */
+  .desktop-only{display:none}
+  .mobile-only{display:block}
+
+  /* ── DESKTOP LAYOUT ── */
+  @media(min-width:1024px){
+    body{background:white}
+
+    /* Reset product container on desktop */
+    .product{max-width:none;padding:0;background:transparent}
+
+    /* Show nav on desktop */
+    .site-nav{display:flex!important}
+
+    /* Make pdp-body-desktop the named grid container */
+    .pdp-body-desktop{
+      display:grid;
+      grid-template-columns:[outer-left] minmax(24px,1fr) [grid-start] repeat(12,[col-start] minmax(0,74px) [col-end]) [grid-end] minmax(24px,1fr) [outer-right];
+      column-gap:24px;
+      align-items:start;
+      min-height:100vh;
+      width:100%;
+    }
+
+    /* Left panel: spans outer-left gutter + 7 content cols = 8 tracks */
+    .pdp-left-desktop{
+      display:flex!important;
+      flex-direction:column;
+      align-items:stretch;
+      grid-column:span 8 / span 8;
+      background:white;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:hidden;
+      padding:24px 24px 0;
+      width:auto;
+      gap:0;
+      justify-content:flex-start;
+    }
+    .pdp-left-desktop .img-section{margin:0}
+    .pdp-left-desktop .img-bottom-bar{display:none}
+    .pdp-left-desktop .slider{
+      width:100%;
+      aspect-ratio:1 / 1;
+      max-height:calc(100vh - 24px);
+      max-width:calc(100vh - 24px);
+      height:auto;
+      border-radius:16px;
+      overflow:hidden;
+      flex-shrink:0;
+    }
+    .pdp-left-desktop .slider .dots{top:auto;bottom:20px;left:20px}
+    .pdp-left-desktop .slider .slider-btn.prev{left:24px}
+    .pdp-left-desktop .slider .slider-btn.next{right:24px}
+
+    /* Right panel: spans 5 content cols (9–13) + outer-right = cols 9/14 */
+    .pdp-right-desktop{
+      grid-column:9 / 14;
+      width:auto;
+      min-width:0;
+      padding:36px 24px 36px 24px;
+      overflow-y:auto;
+      min-height:100vh;
+      align-self:stretch;
+    }
+
+    /* Show / hide */
+    .desktop-only{display:block}
+    .mobile-only{display:none!important}
+
+    /* Desktop stars row */
+    .dsk-stars-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:16px;
+    }
+    .dsk-stars-text{font-size:20px;color:#bf5220;letter-spacing:2px;line-height:1}
+    .dsk-customers{font-size:12px;font-weight:500;color:#1a100a}
+
+    /* Desktop title */
+    .dsk-title{
+      font-size:40px;
+      font-weight:500;
+      line-height:1.1;
+      letter-spacing:-0.8px;
+      color:#0c0c0d;
+      margin-bottom:6px;
+    }
+    .dsk-subtitle{
+      font-size:18px;
+      color:#6e6e6e;
+      line-height:1.4;
+      margin-bottom:16px;
+    }
+
+    /* Desktop badges / price pills */
+    .dsk-badges{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:16px;
+    }
+
+    /* Desktop body text */
+    .dsk-body{
+      font-size:16px;
+      color:#5c4a3a;
+      line-height:1.5;
+      margin-bottom:20px;
+    }
+
+    /* Desktop buy btn */
+    .dsk-buy-btn{
+      width:100%;
+      background:#0c0c0d;
+      color:#fff;
+      border:none;
+      height:56px;
+      border-radius:999px;
+      font-size:15px;
+      font-weight:500;
+      cursor:pointer;
+      transition:opacity .15s;
+      letter-spacing:0;
+      margin-top:16px;
+      margin-bottom:16px;
+    }
+    .dsk-buy-btn:hover{opacity:.85}
+
+    /* Desktop perks */
+    .dsk-perks{
+      display:flex;
+      flex-direction:row;
+      gap:8px;
+      align-items:center;
+      justify-content:center;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+    }
+    .dsk-perk{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:12px;
+      color:#0c0c0d;
+    }
+    .dsk-perk-icon{width:16px;height:16px;object-fit:contain;flex-shrink:0}
+
+    /* Desktop divider */
+    .dsk-divider{
+      height:1px;
+      background:rgba(0,0,0,0.1);
+      margin:56px 0 0;
+    }
+
+    /* Desktop accordion rows */
+    .dsk-accordion{border-bottom:1px solid rgba(0,0,0,0.1)}
+    .dsk-accordion-btn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:none;
+      border:none;
+      padding:16px 0;
+      cursor:pointer;
+      font-family:'Inter',sans-serif;
+    }
+    .dsk-accordion-label{
+      font-size:12px;
+      font-weight:500;
+      text-transform:uppercase;
+      letter-spacing:0.96px;
+      color:#bf5220;
+      line-height:1;
+    }
+    .dsk-accordion-icon{display:flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0}.dsk-accordion-icon .icon-plus{width:14px;height:14px;display:block}.dsk-accordion-icon .icon-minus{display:none}
+    .dsk-accordion-body{
+      overflow:hidden;
+      max-height:0;
+      margin-top:0;
+      transition:max-height .35s cubic-bezier(.4,0,.2,1),margin-top .35s cubic-bezier(.4,0,.2,1);
+    }
+    .dsk-accordion.open .dsk-accordion-body{max-height:600px;margin-top:-8px}
+    .dsk-accordion.open .dsk-accordion-icon .icon-plus{display:none}.dsk-accordion.open .dsk-accordion-icon .icon-minus{display:block}
+
+    /* Desktop accordion inner content */
+    .dsk-acc-inner{padding:0 0 24px}.dsk-acc-inner .rc-nav{margin-top:16px}.dsk-acc-inner .section-heading{margin-top:0}
+
+    /* Hide full mobile sections on desktop */
+    .benefits-section,
+    .nutrition-section,
+    .reviews-section,
+    .pdp-divider-line{display:none}
+
+    /* Flavour card on desktop uses same element */
+    #flavour-card{margin-bottom:0}
+    #flavour-card-dsk{margin-bottom:0}
+
+    /* Perks on mobile hidden */
+    .pdp-cta{margin-bottom:0}
+
+    /* ── SORRY PAGE DESKTOP ── */
+    #sorry{background:#fff}
+    .sorry-body{
+      display:grid;
+      grid-template-columns:[outer-left] minmax(24px,1fr) [grid-start] repeat(12,[col-start] minmax(0,74px) [col-end]) [grid-end] minmax(24px,1fr) [outer-right];
+      column-gap:24px;
+      min-height:calc(100vh - 48px);
+      padding:0;
+    }
+    .sorry-left{
+      grid-column:grid-start / col-end 5;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      padding:48px 40px 48px 0;
+    }
+    .sorry-right{
+      grid-column:col-start 6 / outer-right;
+      margin-left:-24px;
+      padding:48px max(24px, calc((100vw - 1200px) / 2)) 60px 24px;
+      background:#f8f4ee;
+    }
+    .sorry-card{
+      border-radius:20px;
+      padding:48px 40px;
+      margin-bottom:0;
+      text-align:left;
+      background:#f8f4ee;
+      width:100%;
+      box-sizing:border-box;
+    }
+    .sorry-card h2{font-size:24px}
+    .sorry-right .range-heading{font-size:22px;margin-bottom:6px}
+    .sorry-right .range-sub{margin-bottom:24px}
+    .sorry-right .range-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+    .sorry-right .range-card-img{height:220px}
+    .sorry-right .range-card-info{padding:16px}
+    .sorry-right .range-name{font-size:15px}
+    .sorry-right .range-price{font-size:15px}
+    .back{margin-bottom:20px}
+  }
+</style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+<div class="product" id="product-page">
+
+  <!-- Nav (mobile only) -->
+  <div class="site-nav">
+    <span class="site-nav-logo">Nutri<span>Lab</span></span>
+  </div>
+
+  <!-- Desktop two-column body wrapper -->
+  <div class="pdp-body-desktop">
+
+    <!-- LEFT COLUMN: image slider -->
+    <div class="pdp-left-desktop">
+      <!-- Image Section -->
+      <div class="img-section">
+        <div class="slider" id="slider">
+          <div class="slides" id="slides">
+            <img src="Hydration%20essentials%20with%20citrus%20refreshment.png" alt="Product 1" />
+            <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=600&q=80" alt="Product 2" />
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80" alt="Product 3" />
+          </div>
+          <div class="new-badge"><span class="badge-star">⭐</span><span class="badge-label">New</span></div>
+          <div class="dots" id="dots">
+            <div class="dot active" onclick="goTo(0)"></div>
+            <div class="dot" onclick="goTo(1)"></div>
+            <div class="dot" onclick="goTo(2)"></div>
+          </div>
+          <button class="slider-btn prev" onclick="slide(-1)">
+            <svg width="10" height="8" viewBox="0 0 14 10" fill="none"><path d="M13 5H1M1 5L5 1M1 5L5 9" stroke="#0c0c0d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="slider-btn next" onclick="slide(1)">
+            <svg width="10" height="8" viewBox="0 0 14 10" fill="none"><path d="M1 5H13M13 5L9 1M13 5L9 9" stroke="#0c0c0d" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="img-bottom-bar"></div>
+      </div>
+    </div><!-- end pdp-left-desktop -->
+
+    <!-- RIGHT COLUMN: product info (desktop only) -->
+    <div class="pdp-right-desktop desktop-only">
+      <!-- Stars row -->
+      <div class="dsk-stars-row">
+        <span class="dsk-stars-text">★★★★★</span>
+        <span class="dsk-customers">4,000,000 happy customers</span>
+      </div>
+      <!-- Title -->
+      <h1 class="dsk-title">NutriLab Hydration</h1>
+      <p class="dsk-subtitle">Electrolytes</p>
+      <!-- Price pills -->
+      <div class="dsk-badges">
+        <div class="badge-green"><strong>£2.50</strong> per serving</div>
+        <div class="badge-grey">12 servings</div>
+      </div>
+      <!-- Description -->
+      <p class="dsk-body">5 essential electrolytes, 12 key vitamins. A delicious low-calorie drink mix designed to keep you properly hydrated, every day.</p>
+      <!-- Flavour selector (shared JS, separate element) -->
+      <div class="pdp-flavour-card" id="flavour-card-dsk">
+        <div class="flavour-selected" onclick="toggleFlavourOptionsDsk()">
+          <div class="flavour-left">
+            <div class="flavour-avatar" id="flavour-avatar-dsk">
+              <img id="flavour-avatar-img-dsk" src="Fresh%20citrus%20highlights%20on%20vibrant%20backdrop.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+            </div>
+            <div class="flavour-text">
+              <div class="flavour-name" id="flavour-selected-name-dsk">Citrus</div>
+              <div class="flavour-price">£30.50/box | 12 servings</div>
+            </div>
+          </div>
+          <div class="flavour-change">
+            Change Flavour
+            <svg id="flavour-chevron-dsk" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6L8 10L12 6" stroke="#6e6e6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+        <div class="flavour-options" id="flavour-options-dsk">
+          <div class="flavour-options-divider"></div>
+          <div class="flavour-scroll-wrap" id="flavour-scroll-wrap-dsk">
+            <div id="flavour-options-list-dsk"></div>
+            <div class="flavour-fade" id="flavour-fade-dsk"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Buy now button -->
+      <button class="dsk-buy-btn" onclick="showSorry()">Buy now</button>
+      <!-- Perks row -->
+      <div class="dsk-perks">
+        <div class="dsk-perk">
+          <img class="dsk-perk-icon" src="https://www.figma.com/api/mcp/asset/a68423c0-4e12-4e9f-8443-ad2b42a77d41" alt="" />
+          Free shipping on orders over £45
+        </div>
+        <div class="dsk-perk">
+          <img class="dsk-perk-icon" src="https://www.figma.com/api/mcp/asset/6a302527-dc2b-428a-a5e6-2dc2f57cb0cf" alt="" />
+          30-Day Money Back Guarantee
+        </div>
+      </div>
+      <!-- Divider -->
+      <div class="dsk-divider"></div>
+      <!-- Accordion: Key Benefits -->
+      <div class="dsk-accordion open" id="dsk-acc-benefits">
+        <button class="dsk-accordion-btn" onclick="toggleDskAccordion('dsk-acc-benefits')">
+          <span class="dsk-accordion-label">Key Benefits</span>
+          <span class="dsk-accordion-icon"><img class="icon-plus" src="https://www.figma.com/api/mcp/asset/ef1c21b6-4570-4277-a584-fe17c0ba0589" alt="" /><svg class="icon-minus" width="14" height="2" viewBox="0 0 14 2" fill="none"><path d="M1 1H13" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="dsk-accordion-body">
+          <div class="dsk-acc-inner">
+            <h2 class="section-heading">Engineered to fuel your day</h2>
+            <div class="benefits-grid">
+              <div class="benefits-row">
+                <div class="benefit-item">
+                  <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg></div>
+                  <div class="benefit-body"><div class="benefit-title">Electrolytes</div><div class="benefit-supporting">5 essential types</div></div>
+                </div>
+                <div class="benefit-item">
+                  <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></div>
+                  <div class="benefit-body"><div class="benefit-title">Key vitamins</div><div class="benefit-supporting">12 included per serving</div></div>
+                </div>
+              </div>
+              <div class="benefits-row">
+                <div class="benefit-item">
+                  <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+                  <div class="benefit-body"><div class="benefit-title">Low calorie</div><div class="benefit-supporting">Just 15 kcal per serving</div></div>
+                </div>
+                <div class="benefit-item">
+                  <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+                  <div class="benefit-body"><div class="benefit-title">Vegan &amp; plant-based</div><div class="benefit-supporting">100% plant-based formula</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Accordion: Nutrition -->
+      <div class="dsk-accordion" id="dsk-acc-nutrition">
+        <button class="dsk-accordion-btn" onclick="toggleDskAccordion('dsk-acc-nutrition')">
+          <span class="dsk-accordion-label">Nutrition</span>
+          <span class="dsk-accordion-icon"><img class="icon-plus" src="https://www.figma.com/api/mcp/asset/ef1c21b6-4570-4277-a584-fe17c0ba0589" alt="" /><svg class="icon-minus" width="14" height="2" viewBox="0 0 14 2" fill="none"><path d="M1 1H13" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="dsk-accordion-body">
+          <div class="dsk-acc-inner">
+            <h2 class="section-heading">Nothing hidden, everything counts</h2>
+            <div class="nutrition-table">
+              <div class="nt-col-left">
+                <div class="nt-cell hd bold">Nutrients</div>
+                <div class="nt-cell bold">Energy</div>
+                <div class="nt-cell bold">Fat (g) of which</div>
+                <div class="nt-cell">saturates (g)</div>
+                <div class="nt-cell">monounsaturates (g)</div>
+                <div class="nt-cell">polyunsaturates (g)</div>
+                <div class="nt-cell bold">Carbohydrates (g)</div>
+                <div class="nt-cell">of which sugars (g)</div>
+                <div class="nt-cell bold">Fibre (g)</div>
+                <div class="nt-cell bold">Protein (g)</div>
+                <div class="nt-cell bold last">Salt (g)</div>
+              </div>
+              <div class="nt-col-right">
+                <div class="nt-cell hd bold center">Per 100g</div>
+                <div class="nt-cell center">444.4kcal / 1857.8kJ</div>
+                <div class="nt-cell center">14.4</div>
+                <div class="nt-cell center">2.8</div>
+                <div class="nt-cell center">3.8</div>
+                <div class="nt-cell center">7.4</div>
+                <div class="nt-cell center">33.3</div>
+                <div class="nt-cell center">4.4</div>
+                <div class="nt-cell center">5.6</div>
+                <div class="nt-cell center">44.4</div>
+                <div class="nt-cell center last">0.9</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Accordion: Reviews -->
+      <div class="dsk-accordion" id="dsk-acc-reviews">
+        <button class="dsk-accordion-btn" onclick="toggleDskAccordion('dsk-acc-reviews')">
+          <span class="dsk-accordion-label">Reviews</span>
+          <span class="dsk-accordion-icon"><img class="icon-plus" src="https://www.figma.com/api/mcp/asset/ef1c21b6-4570-4277-a584-fe17c0ba0589" alt="" /><svg class="icon-minus" width="14" height="2" viewBox="0 0 14 2" fill="none"><path d="M1 1H13" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+        </button>
+        <div class="dsk-accordion-body">
+          <div class="dsk-acc-inner">
+            <h2 class="section-heading">Loved by thousands</h2>
+            <div class="rc-viewport"><div class="rc-carousel" id="rc-carousel-dsk">
+              <div class="rc-card">
+                <div class="rc-review">
+                  <div class="rc-stars-text">★★★★★</div>
+                  <div class="rc-title">Finally a protein shake that actually tastes good</div>
+                  <p class="rc-body">...and keeps me full until lunch. The chocolate flavour is genuinely delicious — not chalky at all.</p>
+                </div>
+                <div class="rc-author">Sarah M.<br>12 March 2025</div>
+              </div>
+              <div class="rc-card beige">
+                <div class="rc-review">
+                  <div class="rc-stars-text">★★★★★</div>
+                  <div class="rc-title">Been using this for 3 months now</div>
+                  <p class="rc-body">Love that it has everything in one — I don't need to take any extra vitamins. Mixes perfectly with just a shaker.</p>
+                </div>
+                <div class="rc-author">James T.<br>2 February 2025</div>
+              </div>
+              <div class="rc-card">
+                <div class="rc-review">
+                  <div class="rc-stars-text">★★★★☆</div>
+                  <div class="rc-title">Really solid product</div>
+                  <p class="rc-body">Gives me loads of energy and I like knowing exactly what's going in. Docking one star only because I wish there were more flavour options.</p>
+                </div>
+                <div class="rc-author">Priya K.<br>19 January 2025</div>
+              </div>
+            </div></div>
+            <div class="rc-nav">
+              <div class="rc-dots">
+                <div class="rc-dot active" id="rc-dot-dsk-0"></div>
+                <div class="rc-dot" id="rc-dot-dsk-1"></div>
+                <div class="rc-dot" id="rc-dot-dsk-2"></div>
+              </div>
+              <div class="rc-arrows">
+                <button class="rc-arrow" id="rc-prev-dsk" aria-label="Previous review">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12.5 15L7.5 10L12.5 5" stroke="#0c0c0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button class="rc-arrow" id="rc-next-dsk" aria-label="Next review">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 5L12.5 10L7.5 15" stroke="#0c0c0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end pdp-right-desktop -->
+
+  </div><!-- end pdp-body-desktop -->
+
+  <!-- MOBILE-ONLY product info (hidden on desktop) -->
+  <div class="mobile-only" id="mobile-product-info" style="padding:24px 20px 0">
+
+  <!-- Description Section -->
+  <div class="pdp-stars-row">
+    <span class="pdp-stars-text">★★★★★</span>
+    <span class="pdp-customers">4,000,000 happy customers</span>
+  </div>
+  <h1 class="pdp-title">NutriLab Hydration</h1>
+  <p class="pdp-subtitle">Electrolytes</p>
+  <div class="pdp-badges">
+    <div class="badge-green"><strong>£2.50</strong> per serving</div>
+    <div class="badge-grey">12 servings</div>
+  </div>
+  <p class="pdp-body">5 essential electrolytes, 12 key vitamins. A delicious low-calorie drink mix designed to keep you properly hydrated, every day.</p>
+  <div class="pdp-flavour-card" id="flavour-card">
+    <div class="flavour-selected" onclick="toggleFlavourOptions()">
+      <div class="flavour-left">
+        <div class="flavour-avatar" id="flavour-avatar">
+          <img id="flavour-avatar-img" src="Fresh%20citrus%20highlights%20on%20vibrant%20backdrop.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div class="flavour-text">
+          <div class="flavour-name" id="flavour-selected-name">Citrus</div>
+          <div class="flavour-price">£30.50/box | 12 servings</div>
+        </div>
+      </div>
+      <div class="flavour-change">
+        Change Flavour
+        <svg id="flavour-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6L8 10L12 6" stroke="#6e6e6e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div class="flavour-options" id="flavour-options">
+      <div class="flavour-options-divider"></div>
+      <div class="flavour-scroll-wrap" id="flavour-scroll-wrap">
+        <div id="flavour-options-list"></div>
+        <div class="flavour-fade" id="flavour-fade"></div>
+      </div>
+    </div>
+  </div>
+  <div class="pdp-cta">
+    <button class="pdp-buy-btn" onclick="showSorry()">Buy now</button>
+    <div class="pdp-perks">
+      <div class="pdp-perk">
+        <img class="pdp-perk-icon" src="https://www.figma.com/api/mcp/asset/a68423c0-4e12-4e9f-8443-ad2b42a77d41" alt="" />
+        Free shipping on orders over £45
+      </div>
+      <div class="pdp-perk">
+        <img class="pdp-perk-icon" src="https://www.figma.com/api/mcp/asset/6a302527-dc2b-428a-a5e6-2dc2f57cb0cf" alt="" />
+        30-Day Money Back Guarantee
+      </div>
+    </div>
+  </div>
+
+  </div><!-- end mobile-product-info -->
+
+  <!-- BENEFITS -->
+  <div class="benefits-section">
+    <div class="benefits-label">Key benefits</div>
+    <h2 class="section-heading">Engineered to fuel your day</h2>
+    <div class="benefits-grid">
+      <div class="benefits-row">
+        <div class="benefit-item">
+          <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg></div>
+          <div class="benefit-body">
+            <div class="benefit-title">Electrolytes</div>
+            <div class="benefit-supporting">5 essential types</div>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></div>
+          <div class="benefit-body">
+            <div class="benefit-title">Key vitamins</div>
+            <div class="benefit-supporting">12 included per serving</div>
+          </div>
+        </div>
+      </div>
+      <div class="benefits-row">
+        <div class="benefit-item">
+          <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+          <div class="benefit-body">
+            <div class="benefit-title">Low calorie</div>
+            <div class="benefit-supporting">Just 15 kcal per serving</div>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon-box"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+          <div class="benefit-body">
+            <div class="benefit-title">Vegan &amp; plant-based</div>
+            <div class="benefit-supporting">100% plant-based formula</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdp-divider-line"></div>
+  <!-- NUTRITION -->
+  <div class="nutrition-section">
+    <div class="nutrition-label">Nutrition per serving</div>
+    <h2 class="section-heading">Nothing hidden, everything counts</h2>
+    <div class="nutrition-table">
+      <div class="nt-col-left">
+        <div class="nt-cell hd bold">Nutrients</div>
+        <div class="nt-cell bold">Energy</div>
+        <div class="nt-cell bold">Fat (g) of which</div>
+        <div class="nt-cell">saturates (g)</div>
+        <div class="nt-cell">monounsaturates (g)</div>
+        <div class="nt-cell">polyunsaturates (g)</div>
+        <div class="nt-cell bold">Carbohydrates (g)</div>
+        <div class="nt-cell">of which sugars (g)</div>
+        <div class="nt-cell bold">Fibre (g)</div>
+        <div class="nt-cell bold">Protein (g)</div>
+        <div class="nt-cell bold last">Salt (g)</div>
+      </div>
+      <div class="nt-col-right">
+        <div class="nt-cell hd bold center">Per 100g</div>
+        <div class="nt-cell center">444.4kcal / 1857.8kJ</div>
+        <div class="nt-cell center">14.4</div>
+        <div class="nt-cell center">2.8</div>
+        <div class="nt-cell center">3.8</div>
+        <div class="nt-cell center">7.4</div>
+        <div class="nt-cell center">33.3</div>
+        <div class="nt-cell center">4.4</div>
+        <div class="nt-cell center">5.6</div>
+        <div class="nt-cell center">44.4</div>
+        <div class="nt-cell center last">0.9</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pdp-divider-line"></div>
+  <!-- REVIEWS -->
+  <div class="reviews-section">
+    <div class="reviews-label">Customer reviews</div>
+    <h2 class="section-heading">Loved by thousands</h2>
+
+    <div class="rc-viewport"><div class="rc-carousel" id="rc-carousel">
+
+      <!-- Card 1: Sarah M. ★★★★★ (white) -->
+      <div class="rc-card">
+        <div class="rc-review">
+          <div class="rc-stars-text">★★★★★</div>
+          <div class="rc-title">Finally a protein shake that actually tastes good</div>
+          <p class="rc-body">...and keeps me full until lunch. The chocolate flavour is genuinely delicious — not chalky at all.</p>
+        </div>
+        <div class="rc-author">Sarah M.<br>12 March 2025</div>
+      </div>
+
+      <!-- Card 2: James T. ★★★★★ (beige) -->
+      <div class="rc-card beige">
+        <div class="rc-review">
+          <div class="rc-stars-text">★★★★★</div>
+          <div class="rc-title">Been using this for 3 months now</div>
+          <p class="rc-body">Love that it has everything in one — I don't need to take any extra vitamins. Mixes perfectly with just a shaker.</p>
+        </div>
+        <div class="rc-author">James T.<br>2 February 2025</div>
+      </div>
+
+      <!-- Card 3: Priya K. ★★★★☆ (white) -->
+      <div class="rc-card">
+        <div class="rc-review">
+          <div class="rc-stars-text">★★★★☆</div>
+          <div class="rc-title">Really solid product</div>
+          <p class="rc-body">Gives me loads of energy and I like knowing exactly what's going in. Docking one star only because I wish there were more flavour options.</p>
+        </div>
+        <div class="rc-author">Priya K.<br>19 January 2025</div>
+      </div>
+
+    </div></div>
+
+    <!-- Nav: dots + arrows -->
+    <div class="rc-nav">
+      <div class="rc-dots">
+        <div class="rc-dot active" id="rc-dot-0"></div>
+        <div class="rc-dot" id="rc-dot-1"></div>
+        <div class="rc-dot" id="rc-dot-2"></div>
+      </div>
+      <div class="rc-arrows">
+        <button class="rc-arrow" id="rc-prev" aria-label="Previous review">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12.5 15L7.5 10L12.5 5" stroke="#0c0c0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="rc-arrow" id="rc-next" aria-label="Next review">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 5L12.5 10L7.5 15" stroke="#0c0c0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div class="rc-trustpilot">
+      <span class="rc-tp-score">4.3</span>
+      <div class="rc-tp-right">
+        <svg width="110" height="20" viewBox="0 0 110 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+          <defs>
+            <linearGradient id="star5grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="30%" stop-color="#bf5220"/>
+              <stop offset="30%" stop-color="#bf5220" stop-opacity="0.2"/>
+            </linearGradient>
+          </defs>
+          <path d="M9 1l2.29 4.64 5.12.74-3.7 3.61 0.87 5.1L9 12.77l-4.58 2.41 0.87-5.1L1.59 6.38l5.12-.74z" fill="#bf5220"/>
+          <path transform="translate(21,0)" d="M9 1l2.29 4.64 5.12.74-3.7 3.61 0.87 5.1L9 12.77l-4.58 2.41 0.87-5.1L1.59 6.38l5.12-.74z" fill="#bf5220"/>
+          <path transform="translate(42,0)" d="M9 1l2.29 4.64 5.12.74-3.7 3.61 0.87 5.1L9 12.77l-4.58 2.41 0.87-5.1L1.59 6.38l5.12-.74z" fill="#bf5220"/>
+          <path transform="translate(63,0)" d="M9 1l2.29 4.64 5.12.74-3.7 3.61 0.87 5.1L9 12.77l-4.58 2.41 0.87-5.1L1.59 6.38l5.12-.74z" fill="#bf5220"/>
+          <path transform="translate(84,0)" d="M9 1l2.29 4.64 5.12.74-3.7 3.61 0.87 5.1L9 12.77l-4.58 2.41 0.87-5.1L1.59 6.38l5.12-.74z" fill="url(#star5grad)"/>
+        </svg>
+        <span class="rc-tp-stat">out of 5 · 27,000 reviews</span>
+      </div>
+    </div>
+  </div>
+
+  </div><!-- end pdp-content-card -->
+</div>
+
+<!-- SORRY PAGE -->
+<div id="sorry">
+  <div class="site-nav sorry-nav">
+    <span class="site-nav-logo">Nutri<span>Lab</span></span>
+  </div>
+  <div class="sorry-body">
+
+    <!-- Left: waitlist -->
+    <div class="sorry-left">
+      <button class="back" onclick="goBack()">← Back</button>
+      <div class="sorry-card">
+        <div class="sorry-icon">😔</div>
+        <h2>Sorry, this product isn't available yet!</h2>
+        <p>We're working hard to bring this to you. Sign up below and you'll be the first to know when it launches.</p>
+        <div class="email-row">
+          <input type="email" id="email" placeholder="your@email.com" />
+          <button onclick="signup()">Notify me</button>
+        </div>
+        <div class="success" id="success">🎉 You're on the list — we'll be in touch!</div>
+      </div>
+    </div>
+
+    <!-- Right: rest of range -->
+    <div class="sorry-right">
+      <p class="range-heading">Check out the rest of the range</p>
+      <p class="range-sub">Available now and loved by thousands.</p>
+      <div class="range-grid">
+        <div class="range-card">
+          <div class="range-card-img"><img src="Tropical%20punch%20energy%20blend%20showcase.png" alt="Daily Energy Blend" /></div>
+          <div class="range-card-info">
+            <div class="range-cat">Drink Mix</div>
+            <div class="range-name">Daily Energy Blend</div>
+            <div class="range-price">£34.00</div>
+          </div>
+        </div>
+        <div class="range-card">
+          <div class="range-card-img"><img src="Green%20protein%20essentials%20in%20calm%20setting.png" alt="Green Protein Formula" /></div>
+          <div class="range-card-info">
+            <div class="range-cat">Powder</div>
+            <div class="range-name">Green Protein Formula</div>
+            <div class="range-price">£52.00</div>
+          </div>
+        </div>
+        <div class="range-card">
+          <div class="range-card-img"><img src="Sunset%20recovery%20shake%20on%20beach%20table.png" alt="Recovery Shake Mix" /></div>
+          <div class="range-card-info">
+            <div class="range-cat">Powder</div>
+            <div class="range-name">Recovery Shake Mix</div>
+            <div class="range-price">£45.00</div>
+          </div>
+        </div>
+        <div class="range-card">
+          <div class="range-card-img"><img src="Citrus%20fuel%20for%20your%20day.png" alt="Citrus Protein Bar" /></div>
+          <div class="range-card-info">
+            <div class="range-cat">Bar</div>
+            <div class="range-name">Citrus Protein Bar</div>
+            <div class="range-price">£28.00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+  let cur = 0;
+  function slide(dir) { goTo(cur + dir); }
+  function goTo(n) {
+    const imgs = document.querySelectorAll('#slides img');
+    cur = (n + imgs.length) % imgs.length;
+    document.getElementById('slides').style.transform = `translateX(-${cur * document.getElementById('slider').offsetWidth}px)`;
+    document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === cur));
+  }
+  document.querySelectorAll('.v').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.v').forEach(v => v.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+  function showSorry() {
+    document.getElementById('product-page').style.display = 'none';
+    document.getElementById('sorry').style.display = 'block';
+    window.scrollTo(0,0);
+  }
+  function goBack() {
+    document.getElementById('sorry').style.display = 'none';
+    document.getElementById('product-page').style.display = 'block';
+    window.scrollTo(0,0);
+  }
+  function signup() {
+    const v = document.getElementById('email').value.trim();
+    if (!v || !v.includes('@')) { document.getElementById('email').style.borderColor='#bf5220'; return; }
+    document.getElementById('email').style.borderColor='#ddd';
+    document.getElementById('success').style.display='block';
+  }
+
+  // Auto-show sorry page via URL param (for Figma capture)
+  (function(){
+    const p = new URLSearchParams(location.search);
+    if (p.get('view') === 'sorry') window.addEventListener('load', showSorry);
+    if (p.get('force-mobile') === '1') {
+      const s = document.createElement('style');
+      s.textContent = '@media screen{body,html{max-width:390px!important;overflow-x:hidden}@media(min-width:1024px){body{background:#f8f4ee!important}.pdp-body-desktop,.site-nav,.pdp-right-desktop,.desktop-only{display:none!important}.product{display:block!important}}}';
+      document.head.appendChild(s);
+    }
+  })();
+
+  // Flavour dropdown
+  const hydrationFlavours = [
+    { name: 'Citrus', price: '£30.50/box | 12 servings', img: 'Fresh%20citrus%20highlights%20on%20vibrant%20backdrop.png', color: null },
+    { name: 'Cherry & Raspberry', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/FlavourPicker_PDP_CherryAndRaspberry.jpg?w=100&h=100&fit=crop', color: null },
+    { name: 'Pineapple & Mango', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/FlavourPicker_PDP_PineappleAndMango.jpg?w=100&h=100&fit=crop', color: null },
+    { name: 'Blue Raspberry', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/FlavourPicker_PDP_BlueRaspberry.jpg?w=100&h=100&fit=crop', color: null },
+    { name: 'Strawberry & Watermelon', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/Strawberry%20%26%20Watermelon.png?w=100&h=100&fit=crop&crop=center', color: null },
+  ];
+  let selectedFlavour = 'Citrus';
+
+  function buildFlavourOptions() {
+    const list = document.getElementById('flavour-options-list');
+    list.innerHTML = hydrationFlavours.map(f => {
+      const avatarHtml = f.img
+        ? `<div class="flavour-option-avatar" style="position:relative;overflow:hidden"><img src="${f.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/></div>`
+        : `<div class="flavour-option-avatar" style="background:${f.color}"></div>`;
+      const check = `<svg class="flavour-option-check" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.75 9L7.5 12.75L14.25 5.25" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      return `<div class="flavour-option-item${f.name === selectedFlavour ? ' selected' : ''}" onclick="selectHydrationFlavour('${f.name}')">
+        ${avatarHtml}
+        <div class="flavour-option-info">
+          <div class="flavour-option-name">${f.name}</div>
+          <div class="flavour-option-meta">${f.price}</div>
+        </div>
+        ${check}
+      </div>`;
+    }).join('');
+    updateFlavourFade();
+    document.getElementById('flavour-options-list').addEventListener('scroll', updateFlavourFade);
+  }
+
+  function toggleFlavourOptions() {
+    const card = document.getElementById('flavour-card');
+    const opts = document.getElementById('flavour-options');
+    const isOpen = card.classList.contains('open');
+    if (!isOpen) buildFlavourOptions();
+    card.classList.toggle('open');
+    opts.classList.toggle('open');
+  }
+
+  function selectHydrationFlavour(name) {
+    selectedFlavour = name;
+    const f = hydrationFlavours.find(x => x.name === name);
+    document.getElementById('flavour-selected-name').textContent = name;
+    const avatar = document.getElementById('flavour-avatar');
+    if (f.img) {
+      avatar.style.background = '';
+      avatar.innerHTML = `<img src="${f.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/>`;
+    } else {
+      avatar.innerHTML = '';
+      avatar.style.background = f.color;
+    }
+    const card = document.getElementById('flavour-card');
+    const opts = document.getElementById('flavour-options');
+    card.classList.remove('open');
+    opts.classList.remove('open');
+  }
+
+  function updateFlavourFade() {
+    const list = document.getElementById('flavour-options-list');
+    const wrap = document.getElementById('flavour-scroll-wrap');
+    const atBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 2;
+    wrap.classList.toggle('at-bottom', atBottom);
+  }
+
+  // Reviews carousel
+  (function() {
+    var carousel = document.getElementById('rc-carousel');
+    if (!carousel) return;
+    var dots = [0,1,2].map(function(i){return document.getElementById('rc-dot-'+i);});
+    var cards = carousel.querySelectorAll('.rc-card');
+    var current = 0;
+    function goTo(idx) {
+      current = Math.max(0, Math.min(cards.length - 1, idx));
+      var cardW = cards[0].offsetWidth + 12;
+      carousel.scrollTo({left: current * cardW, behavior: 'smooth'});
+      dots.forEach(function(d,i){d && d.classList.toggle('active', i===current);});
+    }
+    document.getElementById('rc-prev').addEventListener('click', function(){goTo(current-1);});
+    document.getElementById('rc-next').addEventListener('click', function(){goTo(current+1);});
+    carousel.addEventListener('scroll', function(){
+      var cardW = cards[0].offsetWidth + 12;
+      var idx = Math.round(carousel.scrollLeft / cardW);
+      if (idx !== current) { current = idx; dots.forEach(function(d,i){d && d.classList.toggle('active', i===current);}); }
+    });
+  })();
+
+  // Desktop reviews carousel
+  (function() {
+    var carousel = document.getElementById('rc-carousel-dsk');
+    if (!carousel) return;
+    var dots = [0,1,2].map(function(i){return document.getElementById('rc-dot-dsk-'+i);});
+    var cards = carousel.querySelectorAll('.rc-card');
+    var current = 0;
+    function goTo(idx) {
+      current = Math.max(0, Math.min(cards.length - 1, idx));
+      var cardW = cards[0].offsetWidth + 12;
+      carousel.scrollTo({left: current * cardW, behavior: 'smooth'});
+      dots.forEach(function(d,i){d && d.classList.toggle('active', i===current);});
+    }
+    document.getElementById('rc-prev-dsk').addEventListener('click', function(){goTo(current-1);});
+    document.getElementById('rc-next-dsk').addEventListener('click', function(){goTo(current+1);});
+    carousel.addEventListener('scroll', function(){
+      var cardW = cards[0].offsetWidth + 12;
+      var idx = Math.round(carousel.scrollLeft / cardW);
+      if (idx !== current) { current = idx; dots.forEach(function(d,i){d && d.classList.toggle('active', i===current);}); }
+    });
+  })();
+
+
+  // Desktop flavour selector
+  function buildFlavourOptionsDsk() {
+    const list = document.getElementById('flavour-options-list-dsk');
+    list.innerHTML = hydrationFlavours.map(f => {
+      const avatarHtml = f.img
+        ? `<div class="flavour-option-avatar" style="position:relative;overflow:hidden"><img src="${f.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/></div>`
+        : `<div class="flavour-option-avatar" style="background:${f.color}"></div>`;
+      const check = `<svg class="flavour-option-check" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.75 9L7.5 12.75L14.25 5.25" stroke="#bf5220" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      return `<div class="flavour-option-item${f.name === selectedFlavour ? ' selected' : ''}" onclick="selectHydrationFlavourDsk('${f.name}')">
+        ${avatarHtml}
+        <div class="flavour-option-info">
+          <div class="flavour-option-name">${f.name}</div>
+          <div class="flavour-option-meta">${f.price}</div>
+        </div>
+        ${check}
+      </div>`;
+    }).join('');
+    updateFlavourFadeDsk();
+    document.getElementById('flavour-options-list-dsk').addEventListener('scroll', updateFlavourFadeDsk);
+  }
+
+  function toggleFlavourOptionsDsk() {
+    const card = document.getElementById('flavour-card-dsk');
+    const opts = document.getElementById('flavour-options-dsk');
+    const isOpen = card.classList.contains('open');
+    if (!isOpen) buildFlavourOptionsDsk();
+    card.classList.toggle('open');
+    opts.classList.toggle('open');
+  }
+
+  function selectHydrationFlavourDsk(name) {
+    selectedFlavour = name;
+    const f = hydrationFlavours.find(x => x.name === name);
+    document.getElementById('flavour-selected-name-dsk').textContent = name;
+    const avatar = document.getElementById('flavour-avatar-dsk');
+    if (f.img) {
+      avatar.style.background = '';
+      avatar.innerHTML = `<img src="${f.img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"/>`;
+    } else {
+      avatar.innerHTML = '';
+      avatar.style.background = f.color;
+    }
+    const card = document.getElementById('flavour-card-dsk');
+    const opts = document.getElementById('flavour-options-dsk');
+    card.classList.remove('open');
+    opts.classList.remove('open');
+  }
+
+  function updateFlavourFadeDsk() {
+    const list = document.getElementById('flavour-options-list-dsk');
+    const wrap = document.getElementById('flavour-scroll-wrap-dsk');
+    const atBottom = list.scrollHeight - list.scrollTop <= list.clientHeight + 2;
+    wrap.classList.toggle('at-bottom', atBottom);
+  }
+
+  // Desktop accordion
+  function toggleDskAccordion(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
