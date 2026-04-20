@@ -956,8 +956,9 @@
   let cur = 0;
   function slide(dir) { goTo(cur + dir); }
   function goTo(n) {
-    const imgs = document.querySelectorAll('#slides img');
-    cur = (n + imgs.length) % imgs.length;
+    const slides = document.querySelectorAll('#slides > *');
+    const count = slides.length || 3;
+    cur = (n + count) % count;
     document.getElementById('slides').style.transform = `translateX(-${cur * document.getElementById('slider').offsetWidth}px)`;
     document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === cur));
   }
@@ -995,15 +996,194 @@
     }
   })();
 
-  // Flavour dropdown
-  const hydrationFlavours = [
-    { name: 'Citrus', price: '£30.50/box | 12 servings', img: 'Fresh%20citrus%20highlights%20on%20vibrant%20backdrop.png', color: null },
-    { name: 'Cherry & Raspberry', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/FlavourPicker_PDP_CherryAndRaspberry.jpg?w=100&h=100&fit=crop', color: null },
-    { name: 'Pineapple & Mango', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/FlavourPicker_PDP_PineappleAndMango.jpg?w=100&h=100&fit=crop', color: null },
-    { name: 'Blue Raspberry', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/FlavourPicker_PDP_BlueRaspberry.jpg?w=100&h=100&fit=crop', color: null },
-    { name: 'Strawberry & Watermelon', price: '£30.50/box | 12 servings', img: 'https://huel.imgix.net/Strawberry%20%26%20Watermelon.png?w=100&h=100&fit=crop&crop=center', color: null },
-  ];
-  let selectedFlavour = 'Citrus';
+  // ── Product data ──────────────────────────────────────────────
+  const PRODUCTS = {
+    choc: {
+      pageTitle:'NutriLab – Chocolate Protein Shake', title:'NutriLab Chocolate Protein Shake',
+      subtitle:'High Protein · RTD', ratingText:'New · Launching soon',
+      description:'Most protein shakes force a trade-off — taste or nutrition, convenience or quality. NutriLab gives you 20g plant protein, zero sugar and 26 vitamins in a can. No blender. No compromise.',
+      badge1:'£2.99', badge1label:'per can', badge2:'12-pack £34.99',
+      slideColor:'#2C1509', selectorLabel:'Flavour',
+      flavours:[{name:'Chocolate',price:'£2.99 per can',color:'#2C1509'},{name:'Vanilla',price:'£2.99 per can',color:'#F0DEB4'},{name:'Strawberry',price:'£2.99 per can',color:'#C0392B'}],
+      benefits:[['20g plant protein','Per can'],['Zero sugar','No added sugar'],['26 vitamins & minerals','100% daily needs'],['Ready to drink','No blender needed']],
+      nutritionNote:'Per can (330ml)', nutrition:['~160 kcal / 670 kJ','4','0.8','1.2','2.0','8','0','1','20','0.3'],
+      related:['smooth','nightshift','crunch','oats'],
+    },
+    smooth: {
+      pageTitle:'NutriLab – Smooth Protein Smoothie', title:'NutriLab Smooth',
+      subtitle:'Protein Smoothie', ratingText:'New · Launching soon',
+      description:"You're trying to eat well but real life happens between meals. NutriLab Smooth is 20g protein and 27 vitamins in a 130g squeeze pouch — built for the moment when you need it most.",
+      badge1:'£3.49', badge1label:'per pouch', badge2:'12-pack £34.99',
+      slideColor:'#C55A0A', selectorLabel:'Flavour',
+      flavours:[{name:'Mango & Passionfruit',price:'£3.49 per pouch',color:'#E8890C'},{name:'Wild Berry',price:'£3.49 per pouch',color:'#8B1A4A'},{name:'Banana & Caramel',price:'£3.49 per pouch',color:'#B8860B'}],
+      benefits:[['20g protein','Pea + brown rice'],['27 vitamins & minerals','100% daily needs'],['No added sugar','Fruit-derived only'],['Grab & go','12-month shelf life']],
+      nutritionNote:'Per pouch (130g)', nutrition:['200 kcal / 836 kJ','5','0.5','1.5','3.0','18','0','2','20','0.2'],
+      related:['choc','nightshift','crunch','pro'],
+    },
+    nightshift: {
+      pageTitle:'NutriLab – Night Shift', title:'NutriLab Night Shift',
+      subtitle:'Overnight Recovery', ratingText:'Join the waitlist · Jan 2027',
+      description:"Night Shift delivers 25g slow-release protein, magnesium and L-theanine 60–90 minutes before sleep — so the 7–9 hours you're already committed to are finally working for you.",
+      badge1:'from £2.99', badge1label:'RTD · £34.99 powder', badge2:'30 servings',
+      slideColor:'#0D0D1A', selectorLabel:'Flavour',
+      flavours:[{name:'Chocolate Night',price:'from £2.99 RTD / £34.99 powder',color:'#1A0D2E'},{name:'Vanilla Dream',price:'from £2.99 RTD / £34.99 powder',color:'#3D2B5E'},{name:'Unflavoured',price:'£34.99 powder only',color:'#2D2D2D'}],
+      benefits:[['25g slow-release protein','Pea + fava bean'],['Magnesium glycinate','150–200mg'],['L-Theanine 200mg','For calm, restful sleep'],['26 vitamins & minerals','Incl. B6 & zinc']],
+      nutritionNote:'Per serving', nutrition:['~120 kcal / 500 kJ','2','0.3','0.5','1.2','3','0','1','25','0.2'],
+      related:['choc','smooth','pro','gummies'],
+    },
+    gummies: {
+      pageTitle:'NutriLab – Daily Gummies Adults', title:'NutriLab Daily Gummies',
+      subtitle:'Daily Vitamins · Adults', ratingText:'4.8 out of 5 · 1,247 reviews',
+      description:"Most people know they're not getting everything they need from food alone. Five gummies a day fills the gaps — 26 vitamins, minerals and super greens, without the effort.",
+      badge1:'£19.99', badge1label:'per box', badge2:'15 daily packs · £1.33/day',
+      slideColor:'#2A5C2A', selectorLabel:'Pack size',
+      flavours:[{name:'1 box (15 days)',price:'£19.99 · £1.33/day',color:'#2A5C2A'},{name:'2 boxes (30 days)',price:'£34.99 · £1.17/day',color:'#2A5C2A'}],
+      benefits:[['26 vitamins & minerals','Full spectrum daily'],['Super greens','Spirulina & chlorella'],['100% vegan','Pectin-based gummies'],['No added sugar','Naturally flavoured']],
+      nutritionNote:'Per daily pack (5 gummies)', nutrition:['~25 kcal / 105 kJ','0','0','0','0','6','3','0','0','0'],
+      related:['kgummies','nightshift','choc','smooth'],
+    },
+    kgummies: {
+      pageTitle:'NutriLab – Daily Gummies Kids', title:'NutriLab Daily Gummies KIDS',
+      subtitle:'Kids · Daily Vitamins · Ages 4+', ratingText:'4.9 out of 5 · 834 reviews',
+      description:"Getting kids to eat well is a daily battle. Five H-shaped gummies gives them the 25 vitamins, minerals and super greens their growing bodies need — in the only format they'll actually eat without a fight.",
+      badge1:'£19.99', badge1label:'per box', badge2:'15 daily packs · Ages 4+',
+      slideColor:'#C8960A', selectorLabel:'Pack size',
+      flavours:[{name:'1 box (15 days)',price:'£19.99 · £1.33/day',color:'#C8960A'},{name:'2 boxes (30 days)',price:'£34.99 · £1.17/day',color:'#C8960A'}],
+      benefits:[["25 vitamins & minerals","Children's daily needs"],['Super greens inside','Spirulina & chlorella'],['No added sugar','Natural apple flavour'],['Vegan & gluten-free','Pectin-based']],
+      nutritionNote:'Per daily pack (5 gummies) · Ages 4+', nutrition:['~25 kcal / 105 kJ','0','0','0','0','6','3','0','0','0'],
+      related:['gummies','choc','oats','crunch'],
+    },
+    crunch: {
+      pageTitle:'NutriLab – Crunch Drinkable Cereal', title:'NutriLab Crunch — Drinkable Cereal',
+      subtitle:'Breakfast · On-the-go', ratingText:'New · Launching H1 2027',
+      description:"Cereal needs a bowl. That's the problem. NutriLab Crunch fixes the format — rice crispies and freeze-dried fruit in a spouted pouch, dry until you're ready. Add milk, shake, drink. 20g protein, no bowl required.",
+      badge1:'£2.00', badge1label:'per pouch', badge2:'Box of 6 · £10.99',
+      slideColor:'#7A4F1A', selectorLabel:'Flavour',
+      flavours:[{name:'Vanilla Crunch',price:'£2.00 per pouch',color:'#F0DEB4'},{name:'Choc Chip',price:'£2.00 per pouch',color:'#3D2010'},{name:'Apple Pie',price:'£2.00 per pouch',color:'#8B4513'},{name:'Birthday Cake',price:'£2.00 per pouch',color:'#D4447C'}],
+      benefits:[['20g protein','Per 90g pouch'],['26 vitamins & minerals','100% daily needs'],['Real crunch','Rice crispies + freeze-dried fruit'],['No bowl needed','Just add milk & shake']],
+      nutritionNote:'Per pouch (90g dry)', nutrition:['~350 kcal / 1463 kJ','8','1.5','2.5','4.0','42','0','5','20','0.4'],
+      related:['oats','choc','smooth','gummies'],
+    },
+    oats: {
+      pageTitle:'NutriLab – Overnight Oats', title:'NutriLab Overnight Oats',
+      subtitle:'Breakfast · Chilled', ratingText:'New · Concept stage',
+      description:'NutriLab Overnight Oats is the only refrigerated oat pot with 25g protein and 26 vitamins — cold-soaked, ready when you are. Grab it. Eat it. Done.',
+      badge1:'from £2.50', badge1label:'per pot', badge2:'10-pot box · £25',
+      slideColor:'#5C7A3A', selectorLabel:'Flavour',
+      flavours:[{name:'Blueberry & Vanilla',price:'from £2.50 per pot',color:'#4A5080'},{name:'Apple & Cinnamon',price:'from £2.50 per pot',color:'#A0522D'},{name:'Chocolate',price:'from £2.50 per pot',color:'#2D1B1B'},{name:'Mango & Coconut',price:'from £2.50 per pot',color:'#D4820A'}],
+      benefits:[['25g protein','Per pot'],['26 vitamins & minerals','Complete nutrition'],['Ready to eat','No prep, no blending'],['Plant-based','100% vegan']],
+      nutritionNote:'Per pot', nutrition:['~350 kcal / 1463 kJ','7','1.0','2.0','4.0','40','8','6','25','0.3'],
+      related:['crunch','choc','smooth','nightshift'],
+    },
+    pro: {
+      pageTitle:'NutriLab – PRO Powder', title:'NutriLab PRO Powder',
+      subtitle:'Performance · Daily', ratingText:'New · Pre-launch',
+      description:'Most supplement stacks dose for the label, not the science. NutriLab PRO Powder doses for the science. 28 ingredients. One scoop. The shelf-clearing daily stack for people who need to perform without compromise.',
+      badge1:'£54.99', badge1label:'per pouch', badge2:'30 servings · £1.83/day',
+      slideColor:'#1A0A2E', selectorLabel:'Flavour',
+      flavours:[{name:'Neutral',price:'£54.99 per pouch',color:'#8A8A9A'},{name:'Citrus',price:'£54.99 per pouch',color:'#D4820A'},{name:'Berry',price:'£54.99 per pouch',color:'#6B2D8B'}],
+      benefits:[['Energy + focus','CoQ10 · Citicoline · B Complex'],['3g Creatine','Proven performance dose'],['Cognitive support','Ashwagandha · Rhodiola'],['28 ingredients','Every one earns its place']],
+      nutritionNote:'Per serving (~22g)', nutrition:['~100 kcal / 418 kJ','1','0.2','0.4','0.4','3','0','0','5','0.1'],
+      related:['nightshift','choc','smooth','gummies'],
+    },
+  };
+
+  const PRODUCT_META = {
+    choc:{name:'Chocolate Protein Shake',cat:'PROTEIN · RTD',price:'£2.99',color:'#2C1509',emoji:'🥤'},
+    smooth:{name:'NutriLab Smooth',cat:'PROTEIN SMOOTHIE',price:'£3.49',color:'#C55A0A',emoji:'🧃'},
+    nightshift:{name:'Night Shift',cat:'OVERNIGHT RECOVERY',price:'from £2.99',color:'#0D0D1A',emoji:'🌙'},
+    gummies:{name:'Daily Gummies',cat:'DAILY VITAMINS',price:'£19.99',color:'#2A5C2A',emoji:'🌿'},
+    kgummies:{name:'Daily Gummies KIDS',cat:'KIDS · AGES 4+',price:'£19.99',color:'#C8960A',emoji:'⭐'},
+    crunch:{name:'Crunch',cat:'BREAKFAST · ON-THE-GO',price:'£2.00',color:'#7A4F1A',emoji:'🥣'},
+    oats:{name:'Overnight Oats',cat:'BREAKFAST · CHILLED',price:'from £2.50',color:'#5C7A3A',emoji:'🌾'},
+    pro:{name:'PRO Powder',cat:'PERFORMANCE · DAILY',price:'£54.99',color:'#1A0A2E',emoji:'⚡'},
+  };
+
+  function initProduct() {
+    const params = new URLSearchParams(location.search);
+    const id = params.get('p') || 'choc';
+    const p = PRODUCTS[id];
+    if (!p) return;
+
+    document.title = p.pageTitle;
+
+    // Desktop
+    const qs = (s,el) => { const n=el||document; const r=n.querySelector(s); if(r) return r; };
+    const qsa = s => Array.from(document.querySelectorAll(s));
+    const set = (s,v) => { const el=qs(s); if(el) el.textContent=v; };
+    const setHTML = (s,v) => { const el=qs(s); if(el) el.innerHTML=v; };
+
+    set('.dsk-title', p.title); set('.dsk-subtitle', p.subtitle); set('.dsk-body', p.description); set('.dsk-customers', p.ratingText);
+    setHTML('.dsk-badges', `<div class="badge-green"><strong>${p.badge1}</strong> ${p.badge1label}</div><div class="badge-grey">${p.badge2}</div>`);
+
+    // Mobile
+    set('.pdp-title', p.title); set('.pdp-subtitle', p.subtitle); set('.pdp-body', p.description); set('.pdp-customers', p.ratingText);
+    setHTML('.pdp-badges', `<div class="badge-green"><strong>${p.badge1}</strong> ${p.badge1label}</div><div class="badge-grey">${p.badge2}</div>`);
+
+    // Slide placeholders
+    const slidesEl = document.getElementById('slides');
+    if (slidesEl) slidesEl.innerHTML = [0,1,2].map(i =>
+      `<div style="flex:0 0 100%;min-width:100%;height:100%;background:${p.slideColor};filter:brightness(${[1,1.2,0.8][i]});display:flex;align-items:center;justify-content:center;padding:20px">
+        ${i===0?`<span style="color:rgba(255,255,255,0.3);font-size:13px;font-weight:600;text-align:center">${p.title}</span>`:''}
+      </div>`
+    ).join('');
+
+    // Flavour data
+    hydrationFlavours = p.flavours;
+    selectedFlavour = p.flavours[0].name;
+    const f0 = p.flavours[0];
+    const selName = document.getElementById('flavour-selected-name');
+    const selNameDsk = document.getElementById('flavour-selected-name-dsk');
+    if (selName) selName.textContent = f0.name;
+    if (selNameDsk) selNameDsk.textContent = f0.name;
+    const mobFP = document.querySelector('#flavour-card .flavour-price');
+    const dskFP = document.querySelector('#flavour-card-dsk .flavour-price');
+    if (mobFP) mobFP.textContent = f0.price;
+    if (dskFP) dskFP.textContent = f0.price;
+    ['flavour-avatar','flavour-avatar-dsk'].forEach(avId => {
+      const av = document.getElementById(avId);
+      if (av) { av.innerHTML=''; av.style.background=f0.color; }
+    });
+    document.querySelectorAll('.flavour-change').forEach(el => {
+      const svgEl = el.querySelector('svg');
+      el.textContent = 'Change '+p.selectorLabel+' ';
+      if (svgEl) el.appendChild(svgEl);
+    });
+
+    // Benefits (mobile + desktop share same class, 4 items each = 8 total)
+    const allTitles = qsa('.benefit-title');
+    const allSubs = qsa('.benefit-supporting');
+    allTitles.forEach((el,i) => { const b=p.benefits[i%4]; if(b) el.textContent=b[0]; });
+    allSubs.forEach((el,i) => { const b=p.benefits[i%4]; if(b) el.textContent=b[1]; });
+
+    // Nutrition header + values
+    qsa('.nt-cell.hd.bold.center').forEach(el => { el.textContent=p.nutritionNote; });
+    qsa('.nt-col-right').forEach(col => {
+      const cells = col.querySelectorAll('.nt-cell:not(.hd)');
+      p.nutrition.forEach((v,i) => { if(cells[i]) cells[i].textContent=v; });
+    });
+
+    // Sorry page range cards
+    const rangeGrid = document.querySelector('.range-grid');
+    if (rangeGrid) rangeGrid.innerHTML = p.related.map(rid => {
+      const m = PRODUCT_META[rid]; if (!m) return '';
+      return `<div class="range-card" onclick="location.href='${rid}.html'">
+        <div class="range-card-img" style="background:${m.color};display:flex;align-items:center;justify-content:center">
+          <span style="font-size:44px">${m.emoji}</span>
+        </div>
+        <div class="range-card-info">
+          <div class="range-cat">${m.cat}</div>
+          <div class="range-name">${m.name}</div>
+          <div class="range-price">${m.price}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+  // Flavour data (populated by initProduct)
+  let hydrationFlavours = [];
+  let selectedFlavour = '';
+
+  initProduct();
 
   function buildFlavourOptions() {
     const list = document.getElementById('flavour-options-list');
