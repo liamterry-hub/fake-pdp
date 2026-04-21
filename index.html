@@ -1163,6 +1163,10 @@
     const slidesEl = document.getElementById('slides');
     if (slidesEl) slidesEl.innerHTML = `<div style="flex:0 0 100%;min-width:100%;height:100%;background:${p.slideColor}"><img src="${p.img}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover;display:block"></div>`;
 
+    // Store base price for subscribe discount calculation
+    _basePrice = parseFloat(p.price.replace(/[^0-9.]/g,''));
+    _basePriceMeta = p.priceMeta;
+
     // Price + Flavour/Format pickers
     ['mob','dsk'].forEach(pre => {
       const pm = document.getElementById(`${pre}-price-main`);
@@ -1231,6 +1235,9 @@
       </div>`;
     }).join('');
   }
+  let _basePrice = 0;
+  let _basePriceMeta = '';
+
   initProduct();
 
   function selectPill(el, containerId) {
@@ -1238,6 +1245,19 @@
     if (!container) return;
     container.querySelectorAll('.pdp-pill').forEach(p => p.classList.remove('active'));
     el.classList.add('active');
+    if (containerId.endsWith('-format-pills')) {
+      const prefix = containerId.replace('-format-pills', '');
+      const isSubscribe = el.textContent.toLowerCase().includes('subscribe');
+      const discounted = isSubscribe ? (_basePrice * 0.85).toFixed(2) : _basePrice.toFixed(2);
+      const priceStr = '£' + discounted;
+      const metaStr = isSubscribe
+        ? _basePriceMeta.replace('Subscribe & save 15%', `Save £${(_basePrice * 0.15).toFixed(2)} · Renews monthly`)
+        : _basePriceMeta;
+      const pm = document.getElementById(`${prefix}-price-main`);
+      const pme = document.getElementById(`${prefix}-price-meta`);
+      if (pm) pm.textContent = priceStr;
+      if (pme) pme.textContent = metaStr;
+    }
   }
 
   // Reviews carousel
