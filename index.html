@@ -21,9 +21,10 @@
   .pdp-left-desktop{display:block}
   .pdp-right-desktop{display:none}
   /* NAV */
-  .site-nav{background:#fff;height:48px;display:flex;align-items:center;justify-content:center;margin:0 -20px;border-bottom:1px solid rgba(0,0,0,0.08)}
+  .site-nav{background:#fff;height:48px;display:flex;align-items:center;justify-content:center;margin:0 -20px;border-bottom:1px solid rgba(0,0,0,0.08);position:sticky;top:0;z-index:100}
   .site-nav-logo{font-family:'Inter',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;color:#0c0c0d}
   .site-nav-logo span{color:#bf5220}
+  .site-nav-product{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;letter-spacing:-0.3px;color:#0c0c0d}
 
   .img-section{margin:0;position:relative}
   .slider{position:relative;width:100%;height:437px;overflow:hidden;margin-bottom:0}
@@ -454,7 +455,7 @@
 
   <!-- Nav (mobile only) -->
   <div class="site-nav">
-    <span class="site-nav-logo">Nutri<span>Lab</span></span>
+    <span class="site-nav-product" id="nav-product-name"></span>
   </div>
 
   <!-- Desktop two-column body wrapper -->
@@ -1147,6 +1148,8 @@
     if (!p) return;
 
     document.title = p.pageTitle;
+    const navName = document.getElementById('nav-product-name');
+    if(navName) navName.textContent = p.title;
 
     // Desktop
     const qs = (s,el) => { const n=el||document; const r=n.querySelector(s); if(r) return r; };
