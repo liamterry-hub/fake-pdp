@@ -893,7 +893,7 @@
 <!-- SORRY PAGE -->
 <div id="sorry">
   <div class="site-nav sorry-nav">
-    <span class="site-nav-logo">Nutri<span>Lab</span></span>
+    <span class="site-nav-product" id="sorry-nav-product-name"></span>
   </div>
   <div class="sorry-body">
 
@@ -1160,6 +1160,8 @@
     document.title = p.pageTitle;
     const navName = document.getElementById('nav-product-name');
     if(navName) navName.textContent = p.title;
+    const sorryNavName = document.getElementById('sorry-nav-product-name');
+    if(sorryNavName) sorryNavName.textContent = p.title;
 
     // Apply per-product colour theme
     const root = document.documentElement;
