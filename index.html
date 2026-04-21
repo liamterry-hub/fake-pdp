@@ -1141,14 +1141,14 @@
   };
 
   const PRODUCT_META = {
-    choc:{name:'Chocolate Protein Shake',cat:'PROTEIN · RTD',price:'£2.99',color:'#2C1509',emoji:'🥤'},
-    smooth:{name:'Smooth',cat:'PROTEIN SMOOTHIE',price:'£3.49',color:'#C55A0A',emoji:'🧃'},
-    nightshift:{name:'Night Shift',cat:'OVERNIGHT RECOVERY',price:'from £2.99',color:'#0D0D1A',emoji:'🌙'},
-    gummies:{name:'Daily Gummies',cat:'DAILY VITAMINS',price:'£19.99',color:'#2A5C2A',emoji:'🌿'},
-    kgummies:{name:'Daily Gummies KIDS',cat:'KIDS · AGES 4+',price:'£19.99',color:'#C8960A',emoji:'⭐'},
-    crunch:{name:'Crunch',cat:'BREAKFAST · ON-THE-GO',price:'£2.00',color:'#7A4F1A',emoji:'🥣'},
-    oats:{name:'Overnight Oats',cat:'BREAKFAST · CHILLED',price:'from £2.50',color:'#5C7A3A',emoji:'🌾'},
-    pro:{name:'PRO Powder',cat:'PERFORMANCE · DAILY',price:'£54.99',color:'#1A0A2E',emoji:'⚡'},
+    choc:{name:'Chocolate Protein Shake',cat:'PROTEIN · RTD',price:'£2.99',img:'img-choc.png'},
+    smooth:{name:'Smooth',cat:'PROTEIN SMOOTHIE',price:'£3.49',img:'img-smooth.png'},
+    nightshift:{name:'Night Shift',cat:'OVERNIGHT RECOVERY',price:'from £2.99',img:'img-nightshift.png'},
+    gummies:{name:'Daily Gummies',cat:'DAILY VITAMINS',price:'£19.99',img:'img-gummies.png'},
+    kgummies:{name:'Daily Gummies KIDS',cat:'KIDS · AGES 4+',price:'£19.99',img:'img-kgummies.png'},
+    crunch:{name:'Crunch',cat:'BREAKFAST · ON-THE-GO',price:'£2.00',img:'img-crunch.png'},
+    oats:{name:'Overnight Oats',cat:'BREAKFAST · CHILLED',price:'from £2.50',img:'img-oats.png'},
+    pro:{name:'PRO Powder',cat:'PERFORMANCE · DAILY',price:'£54.99',img:'img-pro.png'},
   };
 
   function initProduct() {
@@ -1246,8 +1246,8 @@
     if (rangeGrid) rangeGrid.innerHTML = Object.keys(PRODUCT_META).filter(rid => rid !== id).map(rid => {
       const m = PRODUCT_META[rid]; if (!m) return '';
       return `<div class="range-card" onclick="location.href='${rid}.html'">
-        <div class="range-card-img" style="background:${m.color};display:flex;align-items:center;justify-content:center">
-          <span style="font-size:44px">${m.emoji}</span>
+        <div class="range-card-img">
+          <img src="${m.img}" alt="${m.name}">
         </div>
         <div class="range-card-info">
           <div class="range-cat">${m.cat}</div>
